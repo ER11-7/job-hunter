@@ -1,0 +1,7 @@
+.env
+__pycache__/
+*.pyc
+.streamlit/
+data/job_agent.db
+data/exports/*.pdf
+data/exports/*.docx

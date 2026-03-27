@@ -1,0 +1,54 @@
+{
+  "id": "emil_strategy",
+  "name": "Emil Roby - Strategy",
+  "email": "emil.roby@example.com",
+  "summary": "Strategy and research profile optimized for climate-tech, sustainability, and business analysis roles.",
+  "skills": [
+    "Strategy",
+    "Business Analysis",
+    "Climate",
+    "ESG",
+    "Presentation",
+    "Excel",
+    "Stakeholder Management",
+    "Scenario Modelling"
+  ],
+  "experience": [
+    {
+      "title": "Climate Strategy Consultant",
+      "company": "NorthStar Climate",
+      "period": "2022-Present",
+      "impact": "Delivered transition planning and sustainability strategy recommendations for enterprise clients."
+    },
+    {
+      "title": "Research Associate",
+      "company": "Policy Grid",
+      "period": "2020-2022",
+      "impact": "Published insights on clean energy adoption, carbon reporting, and investment trends."
+    }
+  ],
+  "domains": [
+    "Climate",
+    "Energy",
+    "Strategy"
+  ],
+  "locations": [
+    "Bengaluru",
+    "Delhi NCR"
+  ],
+  "keywords": [
+    "Climate",
+    "Energy",
+    "Analyst",
+    "Strategy"
+  ],
+  "education": [
+    {
+      "degree": "B.Tech",
+      "school": "National Institute of Technology"
+    }
+  ],
+  "certifications": [
+    "SASB Fundamentals"
+  ]
+}

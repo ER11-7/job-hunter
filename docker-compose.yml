@@ -1,23 +1,15 @@
 version: '3.8'
 services:
-  postgres:
-    image: postgres:latest
-    restart: always
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: mydb
+  app:
+    build: .
     ports:
-      - "5432:5432"
+      - "10000:10000"
+    env_file:
+      - .env
+    volumes:
+      - .:/app
   redis:
     image: redis:latest
     restart: always
     ports:
       - "6379:6379"
-  worker:
-    build:
-      context: ./worker
-    restart: always
-    depends_on:
-      - postgres
-      - redis
