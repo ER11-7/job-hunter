@@ -1,0 +1,62 @@
+{
+  "id": "emil_roby",
+  "name": "Emil Roby",
+  "email": "emil.roby@example.com",
+  "summary": "Energy and climate analyst focused on ESG strategy, sustainability reporting, and market intelligence.",
+  "skills": [
+    "ESG",
+    "Sustainability",
+    "Climate",
+    "Energy Markets",
+    "Python",
+    "SQL",
+    "Power BI",
+    "Excel",
+    "Financial Modeling",
+    "Stakeholder Management"
+  ],
+  "experience": [
+    {
+      "title": "Senior ESG Analyst",
+      "company": "GreenGrid Advisory",
+      "period": "2023-Present",
+      "impact": "Built decarbonization dashboards, led ESG reporting, and translated climate data into executive recommendations."
+    },
+    {
+      "title": "Energy Markets Analyst",
+      "company": "Terra Insights",
+      "period": "2021-2023",
+      "impact": "Analyzed renewable energy trends, tracked policy changes, and supported client strategy in power markets."
+    },
+    {
+      "title": "Business Analyst",
+      "company": "Clean Future Labs",
+      "period": "2019-2021",
+      "impact": "Developed market sizing models, automated KPI reporting, and synthesized customer and carbon data."
+    }
+  ],
+  "domains": [
+    "ESG",
+    "Energy",
+    "Climate"
+  ],
+  "locations": [
+    "Bengaluru",
+    "Delhi NCR"
+  ],
+  "keywords": [
+    "ESG",
+    "Energy",
+    "Climate",
+    "Analyst"
+  ],
+  "education": [
+    {
+      "degree": "MBA",
+      "school": "Institute of Management"
+    }
+  ],
+  "certifications": [
+    "GRI Certified Sustainability Professional"
+  ]
+}

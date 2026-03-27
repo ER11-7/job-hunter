@@ -1,0 +1,42 @@
+[
+  {
+    "id": "job_001",
+    "title": "ESG Analyst",
+    "company": "SunArc Energy",
+    "description": "Analyze ESG metrics, build sustainability dashboards, support reporting, and work with climate and energy stakeholders to improve decision making.",
+    "location": "Bengaluru",
+    "source": "linkedin",
+    "url": "https://example.com/jobs/job_001",
+    "salary": "18-24 LPA"
+  },
+  {
+    "id": "job_002",
+    "title": "Climate Research Analyst",
+    "company": "Carbon Lens",
+    "description": "Lead climate research, synthesize market insights, create Power BI views, and support senior teams on decarbonization strategy.",
+    "location": "Delhi NCR",
+    "source": "indeed",
+    "url": "https://example.com/jobs/job_002",
+    "salary": "16-22 LPA"
+  },
+  {
+    "id": "job_003",
+    "title": "Energy Market Analyst",
+    "company": "Voltwise",
+    "description": "Build data analysis workflows for renewable energy markets, financial modeling, SQL reporting, and stakeholder updates.",
+    "location": "Bengaluru",
+    "source": "naukri",
+    "url": "https://example.com/jobs/job_003",
+    "salary": "20-26 LPA"
+  },
+  {
+    "id": "job_004",
+    "title": "Sustainability Associate",
+    "company": "EarthScale",
+    "description": "Support ESG reporting and sustainability initiatives. Coordinate internal stakeholders and prepare client-ready reporting packs.",
+    "location": "Mumbai",
+    "source": "remotive",
+    "url": "https://example.com/jobs/job_004",
+    "salary": "12-16 LPA"
+  }
+]

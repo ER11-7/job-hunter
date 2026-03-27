@@ -1,1 +1,26 @@
-{\n  "name": "intelligent-job-hunter",\n  "version": "1.0.0",\n  "description": "A job hunter application powered by intelligent algorithms",\n  "main": "index.js",\n  "scripts": {\n    "test": "echo 'Error: no test specified' && exit 1"\n  },\n  "repository": {\n    "type": "git",\n    "url": "git+https://github.com/ER11-7/job-hunter.git"\n  },\n  "keywords": [\n    "job",\n    "hunter",\n    "intelligent"\n  ],\n  "author": "Your Name",\n  "license": "ISC",\n  "dependencies": {\n    "axios": "^0.21.1",\n    "express": "^4.17.1",\n    "mongoose": "^5.10.9",\n    "dotenv": "^8.2.0"\n  }\n}
+{
+  "name": "job-hunter-legacy-prototype",
+  "version": "1.0.0",
+  "description": "Legacy Node prototype kept for reference while the production MVP runs on Python + Streamlit.",
+  "main": "services/legacy/naukriScraper.js",
+  "scripts": {
+    "legacy:scrape": "node services/legacy/naukriScraper.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ER11-7/job-hunter.git"
+  },
+  "keywords": [
+    "job",
+    "hunter",
+    "legacy"
+  ],
+  "author": "OpenAI Codex",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.10.9"
+  }
+}

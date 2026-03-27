@@ -1,23 +1,12 @@
-# Use Node.js 20 Alpine as the base image
-FROM node:20-alpine
+# Streamlit deployment image
+FROM python:3.11-slim
 
-# Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json (if exists)
-COPY package*.json ./
-
-# Install dependencies
-RUN npm install
-
-# Copy all source files
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
-# Build the application
-RUN npm run build
+EXPOSE 10000
 
-# Expose port 3000
-EXPOSE 3000
-
-# Start the application
-CMD ["npm", "start"]
+CMD ["streamlit", "run", "app.py", "--server.port", "10000", "--server.address", "0.0.0.0"]
