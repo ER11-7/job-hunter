@@ -131,11 +131,11 @@ def score_job(job: Job, profile_text: str) -> MatchResult:
         elif experience_level in {"senior", "lead"} and parsed["seniority"] == "Associate":
             experience_fit = 0.6
 
-    skill_score = round(40 * (len(overlap) / max(len(parsed["skills"]), 1)))
-    role_score = round(30 * min(len(role_hits + preferred_role_hits), 1))
-    domain_score = round(20 * min(len(domain_hits), 1))
-    experience_score = round(10 * experience_fit)
-    total = min(100, skill_score + role_score + domain_score + experience_score)
+    skill_score = 40 * (len(overlap) / max(len(parsed["skills"]), 1))
+    role_score = 30 * min(len(role_hits + preferred_role_hits), 1)
+    domain_score = 20 * min(len(domain_hits), 1)
+    experience_score = 10 * experience_fit
+    total = round(min(100, skill_score + role_score + domain_score + experience_score), 2)
 
     if total >= 85:
         fit = "Excellent"

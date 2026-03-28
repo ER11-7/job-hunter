@@ -4,12 +4,14 @@ import re
 import smtplib
 from email.message import EmailMessage
 
-from backend.database import mark_notified
-from utils.config import SMTP_FROM, SMTP_HOST, SMTP_PASSWORD, SMTP_PORT, SMTP_USER
+import requests
+
+from backend.database import mark_job_alerted
+from utils.config import SMTP_FROM, SMTP_HOST, SMTP_PASS, SMTP_PORT, SMTP_USER, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_WHATSAPP_FROM
 
 
 def _send_email(recipient: str, subject: str, body: str) -> bool:
-    if not (SMTP_HOST and SMTP_USER and SMTP_PASSWORD and recipient):
+    if not (SMTP_HOST and SMTP_USER and SMTP_PASS and recipient):
         return False
 
     message = EmailMessage()
@@ -20,14 +22,25 @@ def _send_email(recipient: str, subject: str, body: str) -> bool:
 
     with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
         server.starttls()
-        server.login(SMTP_USER, SMTP_PASSWORD)
+        server.login(SMTP_USER, SMTP_PASS)
         server.send_message(message)
     return True
 
 
-def _send_mobile_push(recipient: str, body: str) -> bool:
-    # Firebase or another push provider can be plugged in here later.
-    return bool(recipient and False)
+def _send_whatsapp(recipient: str, body: str) -> bool:
+    if not (TWILIO_ACCOUNT_SID and TWILIO_AUTH_TOKEN and TWILIO_WHATSAPP_FROM and recipient):
+        return False
+    response = requests.post(
+        f"https://api.twilio.com/2010-04-01/Accounts/{TWILIO_ACCOUNT_SID}/Messages.json",
+        auth=(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN),
+        data={
+            "From": TWILIO_WHATSAPP_FROM,
+            "To": f"whatsapp:{recipient}",
+            "Body": body[:1500],
+        },
+        timeout=30,
+    )
+    return response.ok
 
 
 def _extract_email(profile_text: str) -> str:
@@ -46,12 +59,24 @@ def send_high_priority_notification(profile_text: str, job: dict) -> str:
     )
     recipient = _extract_email(profile_text)
     email_sent = _send_email(recipient, subject, body)
-    push_sent = _send_mobile_push(recipient, body)
-    mark_notified(job["id"], "uploaded_profile")
-    if email_sent and push_sent:
-        return "email_and_push_sent"
+    mark_job_alerted(job["id"])
+    return "email_sent" if email_sent else "queued_for_ui"
+
+
+def send_batch_alerts(email: str, whatsapp: str, jobs: list[dict]) -> str:
+    if not jobs:
+        return "no_jobs"
+    subject = f"🔥 {len(jobs)} high-match jobs found!"
+    lines = [f"{job['title']} | {job['company']} | {job.get('url', '')} | {job.get('match_score', job.get('score', 0))}%" for job in jobs]
+    body = "\n".join(lines)
+    email_sent = _send_email(email, subject, body)
+    whatsapp_sent = _send_whatsapp(whatsapp, body)
+    for job in jobs:
+        mark_job_alerted(job["id"])
+    if email_sent and whatsapp_sent:
+        return "email_and_whatsapp_sent"
     if email_sent:
         return "email_sent"
-    if push_sent:
-        return "push_sent"
+    if whatsapp_sent:
+        return "whatsapp_sent"
     return "queued_for_ui"

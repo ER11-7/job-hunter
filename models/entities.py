@@ -46,7 +46,7 @@ class Job:
 
 @dataclass
 class MatchResult:
-    score: int
+    score: float
     missing_skills: list[str]
     strengths: list[str]
     fit: str
