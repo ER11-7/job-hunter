@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 import smtplib
 from email.message import EmailMessage
 
@@ -29,7 +30,12 @@ def _send_mobile_push(recipient: str, body: str) -> bool:
     return bool(recipient and False)
 
 
-def send_high_priority_notification(profile, job: dict) -> str:
+def _extract_email(profile_text: str) -> str:
+    match = re.search(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}", profile_text)
+    return match.group(0) if match else ""
+
+
+def send_high_priority_notification(profile_text: str, job: dict) -> str:
     subject = f"High-match job alert: {job['title']} at {job['company']}"
     body = (
         f"Score: {job['score']}\n"
@@ -38,9 +44,10 @@ def send_high_priority_notification(profile, job: dict) -> str:
         f"Missing skills: {', '.join(job['missing_skills']) or 'None'}\n"
         f"URL: {job['url']}\n"
     )
-    email_sent = _send_email(profile.email, subject, body)
-    push_sent = _send_mobile_push(profile.email, body)
-    mark_notified(job["id"], profile.id)
+    recipient = _extract_email(profile_text)
+    email_sent = _send_email(recipient, subject, body)
+    push_sent = _send_mobile_push(recipient, body)
+    mark_notified(job["id"], "uploaded_profile")
     if email_sent and push_sent:
         return "email_and_push_sent"
     if email_sent:

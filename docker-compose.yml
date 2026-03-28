@@ -8,6 +8,14 @@ services:
       - .env
     volumes:
       - .:/app
+  worker:
+    build: .
+    command: ["python", "run_worker.py"]
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    restart: unless-stopped
   redis:
     image: redis:latest
     restart: always

@@ -162,3 +162,10 @@ def get_job_activity(profile_id: str) -> list[dict[str, Any]]:
             (profile_id,),
         ).fetchall()
     return [dict(row) for row in rows]
+
+
+def reset_job_state() -> None:
+    with get_connection() as connection:
+        connection.execute("DELETE FROM job_activity")
+        connection.execute("DELETE FROM job_matches")
+        connection.execute("DELETE FROM jobs")

@@ -10,36 +10,38 @@ It has now been upgraded into a runnable MVP for an AI-powered job automation pl
 
 ## What It Does
 
-- discovers recent jobs from LinkedIn, Naukri, Indeed, and fallback sources
+- discovers recent jobs from LinkedIn, Naukri, Indeed, and company career pages
 - filters jobs posted within the last hour
-- supports multiple user profiles from `data/profiles/*.json`
-- parses job descriptions with optional OpenAI enrichment and local fallback parsing
+- accepts uploaded master profiles in DOCX
+- uses uploaded profile text for matching, ranking, and resume generation
 - scores jobs from `0-100`
 - generates PDF and DOCX resumes
 - suggests referral contacts and editable outreach messages
 - tracks saved/applied jobs
 - sends email notifications for high-fit roles
-- provides a Streamlit dashboard with lightweight login
+- provides a Streamlit dashboard gated by profile upload
+- stores uploaded profile text for autonomous background runs
 
 ## Updated Structure
 
 ```text
 backend/
-  auth.py
   database.py
+  profile_text_store.py
   legacy_routes/profile.js
-  profile_manager.py
 frontend/
   dashboard.py
   legacy/components/
 models/
   entities.py
 services/
+  company_jobs.py
   job_discovery.py
   job_sources.py
   matching_engine.py
   notifier.py
   openai_client.py
+  role_recommender.py
   referral_finder.py
   resume_builder.py
   tracker.py
@@ -51,7 +53,6 @@ utils/
   time_utils.py
 data/
   profiles/
-  samples/
   exports/
 app.py
 run_worker.py
@@ -98,12 +99,8 @@ streamlit run app.py --server.port 10000 --server.address 0.0.0.0
 python run_worker.py
 ```
 
-5. Login with:
-
-```text
-username: demo
-password: demo123
-```
+5. Upload a `.docx` master profile from the sidebar.
+6. The app reads the uploaded DOCX into `st.session_state["profile_text"]` and uses that text everywhere profile context is needed.
 
 ## Deployment
 
@@ -117,6 +114,14 @@ streamlit run app.py --server.port 10000 --server.address 0.0.0.0
 ```
 
 - Docker is included with the same Streamlit entrypoint
+- `docker-compose up --build` starts both the Streamlit app and the background worker
+
+## Continuous Background Run
+
+- Local worker loop: `python run_worker.py`
+- Windows: run the worker with `pythonw run_worker.py` or register it with Task Scheduler
+- Linux: run the worker as a `systemd` service that executes `python run_worker.py`
+- Docker: `docker-compose up --build` keeps the app and worker running independently of the terminal
 
 ## Example Job Scoring Output
 
@@ -142,4 +147,5 @@ The generated resume keeps the master profile structure, rewrites the summary fo
 
 - OpenAI parsing and embedding similarity are optional and activate only when `OPENAI_API_KEY` is configured.
 - Email alerts activate only when SMTP credentials are configured.
-- Redis is optional for later Celery expansion; the current runnable MVP uses the built-in scheduler loop fallback.
+- Redis is optional for later Celery expansion; the current runnable MVP uses the built-in scheduler loop.
+- Uploaded DOCX profile text is persisted to `data/profiles/active_profile.txt` for the background worker.

@@ -6,38 +6,32 @@ from docx import Document
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 
-from models.entities import Job, Profile
+from models.entities import Job
+from services.matching_engine import extract_profile_context
 from utils.config import EXPORTS_DIR
 
 
-def _resume_lines(job: Job, profile: Profile) -> list[str]:
-    relevant_experience = sorted(
-        profile.experience,
-        key=lambda item: sum(
-            1
-            for token in profile.keywords
-            if token.lower() in f"{job.title} {job.description} {item}".lower()
-        ),
-        reverse=True,
-    )
+def _resume_lines(job: Job, profile_text: str) -> list[str]:
+    profile = extract_profile_context(profile_text)
+    relevant_lines = [line.strip() for line in profile_text.splitlines() if line.strip()]
     summary = (
-        f"{profile.name} is a {', '.join(profile.domains[:2])} professional "
-        f"with strengths in {', '.join(profile.skills[:5])}, tailored for {job.title} at {job.company}."
+        f"{profile['name']} is a {', '.join(profile['domains'][:2])} professional "
+        f"with strengths in {', '.join(profile['skills'][:5])}, tailored for {job.title} at {job.company}."
     )
-    lines = [profile.name, profile.email, "", "Summary", summary, "", "Skills", ", ".join(profile.skills)]
+    lines = [profile["name"], "", "Summary", summary, "", "Skills", ", ".join(profile["skills"])]
     lines.extend(["", "Experience"])
-    for entry in relevant_experience:
-        lines.append(f"{entry['title']} | {entry['company']} | {entry['period']}")
-        lines.append(entry["impact"])
+    for line in relevant_lines[:12]:
+        lines.append(line)
     return lines
 
 
-def generate_resume(job: Job, profile: Profile) -> dict[str, str]:
+def generate_resume(job: Job, profile_text: str) -> dict[str, str]:
+    profile = extract_profile_context(profile_text)
     EXPORTS_DIR.mkdir(parents=True, exist_ok=True)
-    stem = f"{profile.id}_{job.id}"
+    stem = f"uploaded_profile_{job.id}"
     pdf_path = EXPORTS_DIR / f"{stem}.pdf"
     docx_path = EXPORTS_DIR / f"{stem}.docx"
-    lines = _resume_lines(job, profile)
+    lines = _resume_lines(job, profile_text)
 
     pdf = canvas.Canvas(str(pdf_path), pagesize=A4)
     y = 800

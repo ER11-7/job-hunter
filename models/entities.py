@@ -9,13 +9,16 @@ from typing import Any
 class Profile:
     id: str
     name: str
-    email: str
-    summary: str
-    skills: list[str]
-    experience: list[dict[str, Any]]
-    domains: list[str]
-    locations: list[str]
-    keywords: list[str]
+    email: str = ""
+    summary: str = ""
+    experience_level: str = ""
+    roles: list[str] = field(default_factory=list)
+    preferred_roles: list[str] = field(default_factory=list)
+    skills: list[str] = field(default_factory=list)
+    experience: list[dict[str, Any]] = field(default_factory=list)
+    domains: list[str] = field(default_factory=list)
+    locations: list[str] = field(default_factory=list)
+    keywords: list[str] = field(default_factory=list)
     education: list[dict[str, Any]] = field(default_factory=list)
     certifications: list[str] = field(default_factory=list)
 
